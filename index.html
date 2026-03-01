@@ -6,7 +6,6 @@
 <title>味みっけ｜料理写真からSNS投稿文を自動生成</title>
 <meta name="description" content="料理写真を1枚撮るだけ。Instagram・Facebook・LINE配信文をAIが30秒で自動生成。飲食店オーナー向けSNS投稿ツール。"/>
 <style>
-/* ===== CSS変数（カラーテーマ） ===== */
 :root {
   --hgrad:linear-gradient(135deg,#c94d10 0%,#e8722a 35%,#f5a030 70%,#fcc84a 100%);
   --bgrad:linear-gradient(135deg,#d05a18 0%,#f08038 100%);
@@ -17,69 +16,59 @@
   --tx:#2a1a0e; --txs:#7a5a40;
   --shad:rgba(216,92,24,.10);
   --upbg:linear-gradient(135deg,#fff8f0,#fff0e0);
+  --scan:#f08038;
   --r:14px;
 }
 [data-color="red"] {
   --hgrad:linear-gradient(135deg,#8a1018 0%,#b82828 35%,#e04040 70%,#f87868 100%);
   --bgrad:linear-gradient(135deg,#a01820 0%,#e04040 100%);
   --bshadow:rgba(160,24,32,.28);
-  --pri:#c02828; --plight:#e04040; --pdark:#801018;
-  --acc:#f8b090;
+  --pri:#c02828; --plight:#e04040; --pdark:#801018; --acc:#f8b090;
   --bg:#fff8f8; --surf:#fff; --card:#fff4f4; --bdr:#f8d0d0;
-  --tx:#280a0a; --txs:#7a4040;
-  --shad:rgba(192,40,40,.10);
-  --upbg:linear-gradient(135deg,#fff8f8,#ffe8e8);
+  --tx:#280a0a; --txs:#7a4040; --shad:rgba(192,40,40,.10);
+  --upbg:linear-gradient(135deg,#fff8f8,#ffe8e8); --scan:#e04040;
 }
 [data-color="brown"] {
   --hgrad:linear-gradient(135deg,#3c1e08 0%,#7a4828 35%,#a87050 70%,#d4a478 100%);
   --bgrad:linear-gradient(135deg,#6b3d1e 0%,#a87050 100%);
   --bshadow:rgba(107,61,30,.28);
-  --pri:#7a4828; --plight:#a87050; --pdark:#4a2810;
-  --acc:#d4a478;
+  --pri:#7a4828; --plight:#a87050; --pdark:#4a2810; --acc:#d4a478;
   --bg:#fdf5ee; --surf:#fff; --card:#fdf0e8; --bdr:#e8d0b8;
-  --tx:#2a1808; --txs:#6a4830;
-  --shad:rgba(122,72,40,.10);
-  --upbg:linear-gradient(135deg,#fdf5ee,#f5e8d8);
+  --tx:#2a1808; --txs:#6a4830; --shad:rgba(122,72,40,.10);
+  --upbg:linear-gradient(135deg,#fdf5ee,#f5e8d8); --scan:#a87050;
 }
 [data-theme="dark"] {
   --hgrad:linear-gradient(135deg,#5a2008 0%,#8a3e18 35%,#b06028 70%,#c88038 100%);
   --bgrad:linear-gradient(135deg,#8a3010 0%,#c07030 100%);
   --bshadow:rgba(180,96,40,.35);
-  --pri:#d07038; --plight:#e09058; --pdark:#a05020;
-  --acc:#e0a848;
+  --pri:#d07038; --plight:#e09058; --pdark:#a05020; --acc:#e0a848;
   --bg:#180e06; --surf:#261408; --card:#2e1a0c; --bdr:#4a2e14;
-  --tx:#faecd8; --txs:#c09060;
-  --shad:rgba(200,112,48,.18);
-  --upbg:linear-gradient(135deg,#261408,#341c0e);
+  --tx:#faecd8; --txs:#c09060; --shad:rgba(200,112,48,.18);
+  --upbg:linear-gradient(135deg,#261408,#341c0e); --scan:#e09058;
 }
 [data-theme="dark"][data-color="red"] {
   --hgrad:linear-gradient(135deg,#4a0808 0%,#7a1818 35%,#a83030 70%,#c85050 100%);
   --bgrad:linear-gradient(135deg,#7a1010 0%,#c03838 100%);
   --bshadow:rgba(180,40,40,.35);
-  --pri:#c84040; --plight:#e06060; --pdark:#902020;
-  --acc:#f09080;
+  --pri:#c84040; --plight:#e06060; --pdark:#902020; --acc:#f09080;
   --bg:#180808; --surf:#261010; --card:#2e1414; --bdr:#4a1818;
-  --tx:#faeaea; --txs:#c08080;
-  --shad:rgba(192,60,60,.18);
-  --upbg:linear-gradient(135deg,#261010,#341818);
+  --tx:#faeaea; --txs:#c08080; --shad:rgba(192,60,60,.18);
+  --upbg:linear-gradient(135deg,#261010,#341818); --scan:#e06060;
 }
 [data-theme="dark"][data-color="brown"] {
   --hgrad:linear-gradient(135deg,#1a0a04 0%,#3e1e0a 35%,#684030 70%,#906050 100%);
   --bgrad:linear-gradient(135deg,#4a2010 0%,#906040 100%);
   --bshadow:rgba(140,80,40,.35);
-  --pri:#a06040; --plight:#c08060; --pdark:#704020;
-  --acc:#c09070;
+  --pri:#a06040; --plight:#c08060; --pdark:#704020; --acc:#c09070;
   --bg:#120804; --surf:#201008; --card:#28160a; --bdr:#402010;
-  --tx:#f8ead8; --txs:#b08060;
-  --shad:rgba(160,96,64,.18);
-  --upbg:linear-gradient(135deg,#201008,#301810);
+  --tx:#f8ead8; --txs:#b08060; --shad:rgba(160,96,64,.18);
+  --upbg:linear-gradient(135deg,#201008,#301810); --scan:#c08060;
 }
 
-/* ===== リセット・ベース ===== */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;transition:background .3s,color .3s;}
 
-/* ===== パスワード画面 ===== */
+/* パスワード */
 #pwWrap{position:fixed;inset:0;background:var(--hgrad);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;transition:background .4s;}
 #pwWrap.gone{display:none;}
 .pw-box{background:var(--surf);border-radius:20px;padding:36px 28px;width:min(90vw,360px);text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.22);}
@@ -93,7 +82,7 @@ body{font-family:'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;backgroun
 .pw-err{font-size:.8rem;color:#dc2626;margin-top:8px;}
 .pw-note{font-size:.72rem;color:var(--txs);margin-top:14px;line-height:1.7;}
 
-/* ===== ヘッダー ===== */
+/* ヘッダー */
 header{background:var(--hgrad);color:#fff;position:relative;overflow:hidden;transition:background .4s;}
 header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M10 10h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4zm-16 8h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4zm-16 8h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
 header::after{content:'';position:absolute;top:0;left:0;right:0;height:48%;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 100%);pointer-events:none;}
@@ -107,7 +96,7 @@ header::after{content:'';position:absolute;top:0;left:0;right:0;height:48%;backg
 .gear-btn svg{width:22px;height:22px;fill:#fff;transition:transform .5s cubic-bezier(.34,1.56,.64,1);}
 .gear-btn:hover svg{transform:rotate(90deg);}
 
-/* ===== 設定モーダル ===== */
+/* モーダル */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.52);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:56px 12px 20px;opacity:0;pointer-events:none;transition:opacity .25s;}
 .modal-ov.open{opacity:1;pointer-events:all;}
 .modal-box{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;width:min(94vw,480px);max-height:82vh;overflow-y:auto;box-shadow:0 16px 56px rgba(0,0,0,.28);transform:translateY(-18px) scale(.97);opacity:0;transition:transform .28s cubic-bezier(.34,1.56,.64,1),opacity .25s;}
@@ -144,7 +133,7 @@ hr.s-div{border:none;border-top:1px solid var(--bdr);margin:16px 0;}
 .save-btn{width:100%;padding:12px;background:var(--bgrad);color:#fff;font-size:.9rem;font-weight:800;border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px var(--bshadow);transition:opacity .2s,transform .15s;margin-top:4px;}
 .save-btn:hover{opacity:.88;transform:translateY(-1px);}
 
-/* ===== メイン ===== */
+/* メイン */
 main{max-width:680px;margin:0 auto;padding:20px 15px 70px;}
 .card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;margin-bottom:16px;box-shadow:0 2px 12px var(--shad);}
 .card-ttl{font-size:.76rem;font-weight:700;letter-spacing:.10em;color:var(--pri);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
@@ -155,7 +144,99 @@ main{max-width:680px;margin:0 auto;padding:20px 15px 70px;}
 .up-txt{font-size:.88rem;color:var(--txs);line-height:1.7;}
 .up-txt strong{color:var(--pri);font-size:.95rem;}
 #fileInput{display:none;}
-#preview{width:100%;max-height:260px;object-fit:cover;border-radius:10px;display:none;margin-top:12px;box-shadow:0 4px 14px rgba(0,0,0,.13);}
+
+/* ===== スキャンアニメーション ===== */
+.preview-wrap{
+  position:relative;
+  display:none;
+  margin-top:12px;
+  border-radius:10px;
+  overflow:hidden;
+}
+.preview-wrap.show{display:block;}
+#preview{
+  width:100%;
+  max-height:260px;
+  object-fit:cover;
+  border-radius:10px;
+  display:block;
+  box-shadow:0 4px 14px rgba(0,0,0,.13);
+}
+/* スキャンライン */
+.scan-line{
+  position:absolute;
+  left:0; right:0;
+  height:3px;
+  background:linear-gradient(90deg, transparent 0%, var(--scan) 30%, rgba(255,255,255,.9) 50%, var(--scan) 70%, transparent 100%);
+  box-shadow:0 0 12px 3px var(--scan);
+  top:0;
+  opacity:0;
+  z-index:3;
+}
+.scan-line.scanning{
+  animation:scanMove 1.4s ease-in-out 3;
+}
+@keyframes scanMove{
+  0%   { top:0%;   opacity:0; }
+  5%   { opacity:1; }
+  95%  { opacity:1; }
+  100% { top:100%; opacity:0; }
+}
+/* スキャン中のオーバーレイ */
+.scan-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0);
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity .3s;
+  border-radius:10px;
+}
+.scan-overlay.show{
+  background:rgba(0,0,0,.32);
+  opacity:1;
+}
+.scan-label{
+  color:#fff;
+  font-size:.82rem;
+  font-weight:700;
+  letter-spacing:.10em;
+  text-shadow:0 1px 6px rgba(0,0,0,.6);
+  margin-top:8px;
+  animation:scanPulse 1s ease-in-out infinite;
+}
+@keyframes scanPulse{
+  0%,100%{opacity:.7;}
+  50%{opacity:1;}
+}
+/* コーナーマーカー */
+.scan-corner{position:absolute;width:18px;height:18px;z-index:4;}
+.scan-corner.tl{top:8px;left:8px;border-top:2.5px solid var(--scan);border-left:2.5px solid var(--scan);}
+.scan-corner.tr{top:8px;right:8px;border-top:2.5px solid var(--scan);border-right:2.5px solid var(--scan);}
+.scan-corner.bl{bottom:8px;left:8px;border-bottom:2.5px solid var(--scan);border-left:2.5px solid var(--scan);}
+.scan-corner.br{bottom:8px;right:8px;border-bottom:2.5px solid var(--scan);border-right:2.5px solid var(--scan);}
+/* スキャン完了バッジ */
+.scan-done{
+  position:absolute;
+  top:10px; left:50%; transform:translateX(-50%);
+  background:rgba(34,197,94,.92);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:800;
+  padding:4px 14px;
+  border-radius:20px;
+  letter-spacing:.06em;
+  z-index:5;
+  display:none;
+  white-space:nowrap;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+.scan-done.show{display:block;}
+
 .rm-btn{display:none;margin:9px auto 0;background:var(--bg);border:1px solid var(--plight);color:var(--pri);border-radius:8px;padding:5px 14px;font-size:.76rem;cursor:pointer;transition:all .15s;}
 .rm-btn:hover{background:var(--pri);color:#fff;}
 .hint-wrap{margin-top:13px;}
@@ -168,6 +249,12 @@ textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rg
 .gen-btn::after{content:'';position:absolute;top:0;left:0;right:0;height:48%;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 100%);pointer-events:none;}
 .gen-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px var(--bshadow);}
 .gen-btn:disabled{opacity:.50;cursor:not-allowed;transform:none;}
+/* 生成ボタン　スキャン済みで光る */
+.gen-btn.ready{animation:btnGlow 1.8s ease-in-out infinite;}
+@keyframes btnGlow{
+  0%,100%{box-shadow:0 5px 20px var(--bshadow);}
+  50%{box-shadow:0 5px 32px var(--bshadow), 0 0 0 4px rgba(255,255,255,.18);}
+}
 
 /* ローディング */
 .loading{display:none;text-align:center;padding:26px;}
@@ -181,79 +268,36 @@ textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rg
 .err{background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:12px;color:#dc2626;font-size:.84rem;margin-top:10px;display:none;}
 .err.on{display:block;}
 
-/* ===== 結果エリア ===== */
+/* 結果エリア */
 #resArea{display:none;}
 #resArea.on{display:block;}
 .res-ttl{font-size:1.02rem;font-weight:900;color:var(--pri);margin-bottom:3px;}
 .res-sub{font-size:.74rem;color:var(--txs);margin-bottom:13px;}
-
-/* タブ */
 .tabs{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap;}
 .tab{padding:6px 15px;border:1.5px solid var(--bdr);border-radius:20px;font-size:.79rem;font-weight:600;cursor:pointer;background:var(--surf);color:var(--txs);transition:all .15s;}
 .tab.on{background:var(--bgrad);color:#fff;border-color:transparent;box-shadow:0 2px 8px var(--bshadow);}
 .tab:hover:not(.on){border-color:var(--pri);color:var(--pri);}
 .pc{display:none;}
 .pc.on{display:block;}
-
-/* 統合テキストエリア */
 .post-wrap{position:relative;}
-.post-area{
-  width:100%;
-  min-height:280px;
-  padding:14px;
-  border:1.5px solid var(--bdr);
-  border-radius:12px;
-  background:var(--surf);
-  color:var(--tx);
-  font-size:.92rem;
-  font-family:'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
-  line-height:1.85;
-  resize:vertical;
-  transition:border-color .2s;
-}
+.post-area{width:100%;min-height:280px;padding:14px;border:1.5px solid var(--bdr);border-radius:12px;background:var(--surf);color:var(--tx);font-size:.92rem;font-family:'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;line-height:1.85;resize:vertical;transition:border-color .2s;}
 .post-area:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(216,92,24,.10);}
 .post-hint{font-size:.72rem;color:var(--txs);margin-top:6px;margin-bottom:10px;}
-
-/* コピーボタン */
-.cp-btn-big{
-  width:100%;
-  padding:14px;
-  background:var(--bgrad);
-  color:#fff;
-  font-size:.95rem;
-  font-weight:800;
-  border:none;
-  border-radius:11px;
-  cursor:pointer;
-  box-shadow:0 4px 16px var(--bshadow);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  transition:all .2s;
-  letter-spacing:.04em;
-}
+.cp-btn-big{width:100%;padding:14px;background:var(--bgrad);color:#fff;font-size:.95rem;font-weight:800;border:none;border-radius:11px;cursor:pointer;box-shadow:0 4px 16px var(--bshadow);display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;letter-spacing:.04em;}
 .cp-btn-big:hover{opacity:.88;transform:translateY(-1px);}
 .cp-btn-big.done{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 4px 16px rgba(22,163,74,.30);}
-
 .retry{width:100%;padding:11px;background:var(--bg);border:1.5px solid var(--bdr);color:var(--txs);font-size:.84rem;border-radius:10px;cursor:pointer;margin-top:9px;transition:all .2s;}
 .retry:hover{border-color:var(--pri);color:var(--pri);}
 
-/* フッター */
 footer{text-align:center;padding:26px 14px;font-size:.74rem;color:var(--txs);border-top:1px solid var(--bdr);}
 footer a{color:var(--pri);text-decoration:none;}
 .badge{display:inline-block;background:var(--acc);color:var(--tx);font-size:.70rem;font-weight:700;border-radius:20px;padding:4px 12px;margin-bottom:8px;}
-
-@media(max-width:480px){
-  .h-ttl{font-size:1.6rem;}
-  .h-inner{padding:24px 52px 18px;}
-  .gen-btn{font-size:.93rem;}
-}
+@media(max-width:480px){.h-ttl{font-size:1.6rem;}.h-inner{padding:24px 52px 18px;}.gen-btn{font-size:.93rem;}}
 </style>
 </head>
 <body data-color="orange">
 
-<!-- ===== パスワード画面 ===== -->
+<!-- パスワード -->
 <div id="pwWrap">
   <div class="pw-box">
     <span class="pw-icon">🍽️</span>
@@ -266,7 +310,7 @@ footer a{color:var(--pri);text-decoration:none;}
   </div>
 </div>
 
-<!-- ===== ヘッダー ===== -->
+<!-- ヘッダー -->
 <header>
   <div class="h-inner">
     <span class="h-icon">🍽️</span>
@@ -278,7 +322,7 @@ footer a{color:var(--pri);text-decoration:none;}
   </button>
 </header>
 
-<!-- ===== 設定モーダル ===== -->
+<!-- 設定モーダル -->
 <div class="modal-ov" id="modalOv" onclick="bgClose(event)">
   <div class="modal-box">
     <div class="modal-hd">
@@ -300,20 +344,14 @@ footer a{color:var(--pri);text-decoration:none;}
       <div class="s-sec">
         <div class="s-lbl">🎨 カラーテーマ</div>
         <div class="c-grid">
-          <button class="c-opt" data-v="orange" onclick="setColor('orange',this)">
-            <div class="c-dot"></div><div class="c-name">オレンジ</div><div class="c-desc">活気・食欲</div>
-          </button>
-          <button class="c-opt" data-v="red" onclick="setColor('red',this)">
-            <div class="c-dot"></div><div class="c-name">レッド</div><div class="c-desc">情熱・辛みメニュー</div>
-          </button>
-          <button class="c-opt" data-v="brown" onclick="setColor('brown',this)">
-            <div class="c-dot"></div><div class="c-name">ブラウン</div><div class="c-desc">温かみ・高級感</div>
-          </button>
+          <button class="c-opt" data-v="orange" onclick="setColor('orange',this)"><div class="c-dot"></div><div class="c-name">オレンジ</div><div class="c-desc">活気・食欲</div></button>
+          <button class="c-opt" data-v="red"    onclick="setColor('red',this)">   <div class="c-dot"></div><div class="c-name">レッド</div>  <div class="c-desc">情熱・辛みメニュー</div></button>
+          <button class="c-opt" data-v="brown"  onclick="setColor('brown',this)"> <div class="c-dot"></div><div class="c-name">ブラウン</div><div class="c-desc">温かみ・高級感</div></button>
         </div>
       </div>
       <hr class="s-div"/>
       <div class="s-sec">
-        <div class="s-lbl">📲 SNSアカウント設定（投稿文末尾に自動追記）</div>
+        <div class="s-lbl">📲 SNSアカウント設定</div>
         <div class="sns-row">
           <input id="shopName" placeholder="🏪 お店の名前"/>
           <input id="shopArea" placeholder="📍 エリア（例：大阪・難波）"/>
@@ -332,10 +370,8 @@ footer a{color:var(--pri);text-decoration:none;}
   </div>
 </div>
 
-<!-- ===== メイン ===== -->
+<!-- メイン -->
 <main>
-
-  <!-- 写真アップロード -->
   <div class="card">
     <div class="card-ttl">📸 料理写真をアップロード</div>
     <div class="up-area" id="upArea"
@@ -349,7 +385,21 @@ footer a{color:var(--pri);text-decoration:none;}
       </div>
     </div>
     <input type="file" id="fileInput" accept="image/*" onchange="loadFile(event)"/>
-    <img id="preview" alt="プレビュー"/>
+
+    <!-- スキャンアニメーション付きプレビュー -->
+    <div class="preview-wrap" id="previewWrap">
+      <img id="preview" alt="プレビュー"/>
+      <div class="scan-line" id="scanLine"></div>
+      <div class="scan-overlay" id="scanOverlay">
+        <div class="scan-label">🔍 画像を解析中...</div>
+      </div>
+      <div class="scan-corner tl"></div>
+      <div class="scan-corner tr"></div>
+      <div class="scan-corner bl"></div>
+      <div class="scan-corner br"></div>
+      <div class="scan-done" id="scanDone">✅ 画像の読み取り完了！</div>
+    </div>
+
     <button class="rm-btn" id="rmBtn" onclick="removeImg()">✕ 写真を外す</button>
     <div class="hint-wrap">
       <div class="hint-lbl">💬 メモ・ヒント（任意でどうぞ）</div>
@@ -358,63 +408,44 @@ footer a{color:var(--pri);text-decoration:none;}
     </div>
   </div>
 
-  <!-- 生成ボタン -->
   <button class="gen-btn" id="genBtn" onclick="generate()">🍽️ SNS投稿文を生成する</button>
   <div class="err" id="errBox"></div>
 
-  <!-- ローディング -->
   <div class="loading" id="loading">
     <span style="font-size:1.8rem">🤖</span>
     <div class="ld-txt" id="ldTxt">料理の魅力を解析中...</div>
     <div class="ld-dots"><span></span><span></span><span></span></div>
   </div>
 
-  <!-- 結果 -->
   <div id="resArea">
     <div class="card">
       <div class="res-ttl">✨ 投稿文が完成しました！</div>
       <div class="res-sub">直接編集できます。コピーしてそのまま貼り付けてください😊</div>
-
       <div class="tabs">
         <button class="tab on" onclick="swTab('ig',this)">📸 Instagram</button>
         <button class="tab" onclick="swTab('fb',this)">👥 Facebook</button>
         <button class="tab" onclick="swTab('line',this)">💬 LINE配信</button>
       </div>
-
-      <!-- Instagram -->
       <div class="pc on" id="pc-ig">
-        <div class="post-wrap">
-          <textarea class="post-area" id="ta-ig" spellcheck="false"></textarea>
-        </div>
-        <div class="post-hint">✏️ テキストを直接編集できます。コピー後にSNSに貼り付けてください。</div>
+        <textarea class="post-area" id="ta-ig" spellcheck="false"></textarea>
+        <div class="post-hint">✏️ 直接編集できます。編集後にコピーしてください。</div>
         <button class="cp-btn-big" id="cp-ig" onclick="cpTA('ig')">📋 Instagram投稿文をコピー</button>
       </div>
-
-      <!-- Facebook -->
       <div class="pc" id="pc-fb">
-        <div class="post-wrap">
-          <textarea class="post-area" id="ta-fb" spellcheck="false"></textarea>
-        </div>
-        <div class="post-hint">✏️ テキストを直接編集できます。コピー後にSNSに貼り付けてください。</div>
+        <textarea class="post-area" id="ta-fb" spellcheck="false"></textarea>
+        <div class="post-hint">✏️ 直接編集できます。編集後にコピーしてください。</div>
         <button class="cp-btn-big" id="cp-fb" onclick="cpTA('fb')">📋 Facebook投稿文をコピー</button>
       </div>
-
-      <!-- LINE -->
       <div class="pc" id="pc-line">
-        <div class="post-wrap">
-          <textarea class="post-area" id="ta-line" spellcheck="false"></textarea>
-        </div>
-        <div class="post-hint">✏️ テキストを直接編集できます。コピー後にLINE公式に貼り付けてください。</div>
+        <textarea class="post-area" id="ta-line" spellcheck="false"></textarea>
+        <div class="post-hint">✏️ 直接編集できます。編集後にコピーしてください。</div>
         <button class="cp-btn-big" id="cp-line" onclick="cpTA('line')">📋 LINE配信文をコピー</button>
       </div>
-
       <button class="retry" onclick="retry()">🔄 別パターンで生成し直す</button>
     </div>
   </div>
-
 </main>
 
-<!-- ===== フッター ===== -->
 <footer>
   <div class="badge">🎁 無料トライアル期間中</div>
   <div>味みっけ by <a href="#" target="_blank">ビジネス気づき劇場</a></div>
@@ -422,211 +453,209 @@ footer a{color:var(--pri);text-decoration:none;}
 </footer>
 
 <script>
-/* ===== 設定値 ===== */
 const WORKER = 'https://aji-mikke-worker.yymmatsu.workers.dev/chat';
 const PW     = 'aji2025';
 const TRIAL  = new Date('2099-12-31');
 
-/* ===== パスワード ===== */
+/* パスワード */
 function checkPw(){
-  const v = document.getElementById('pwInp').value.trim();
-  const now = new Date();
-  if(v === PW || now <= TRIAL){
+  const v=document.getElementById('pwInp').value.trim();
+  if(v===PW||new Date()<=TRIAL){
     sessionStorage.setItem('aji_ok','1');
     document.getElementById('pwWrap').classList.add('gone');
   } else {
-    document.getElementById('pwErr').textContent = 'パスワードが違います。正しいパスワードを入力してください。';
+    document.getElementById('pwErr').textContent='パスワードが違います。';
   }
 }
 (function(){
-  const now = new Date();
-  if(now <= TRIAL || sessionStorage.getItem('aji_ok')==='1')
+  if(new Date()<=TRIAL||sessionStorage.getItem('aji_ok')==='1')
     document.getElementById('pwWrap').classList.add('gone');
 })();
-document.getElementById('pwInp').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPw(); });
+document.getElementById('pwInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
 
-/* ===== モーダル ===== */
-function openModal(){ document.getElementById('modalOv').classList.add('open'); }
-function closeModal(){ document.getElementById('modalOv').classList.remove('open'); }
-function bgClose(e){ if(e.target===document.getElementById('modalOv')) closeModal(); }
+/* モーダル */
+function openModal(){document.getElementById('modalOv').classList.add('open');}
+function closeModal(){document.getElementById('modalOv').classList.remove('open');}
+function bgClose(e){if(e.target===document.getElementById('modalOv'))closeModal();}
 
-/* ===== テーマ ===== */
+/* テーマ */
 function setTheme(m){
-  document.body.setAttribute('data-theme', m==='dark'?'dark':'');
-  document.getElementById('tLight').classList.toggle('on', m==='light');
-  document.getElementById('tDark').classList.toggle('on',  m==='dark');
-  localStorage.setItem('aji_theme', m);
+  document.body.setAttribute('data-theme',m==='dark'?'dark':'');
+  document.getElementById('tLight').classList.toggle('on',m==='light');
+  document.getElementById('tDark').classList.toggle('on',m==='dark');
+  localStorage.setItem('aji_theme',m);
 }
-(function(){ setTheme(localStorage.getItem('aji_theme')||'light'); })();
+(function(){setTheme(localStorage.getItem('aji_theme')||'light');})();
 
-/* ===== カラー ===== */
-function setColor(c, btn){
-  document.body.setAttribute('data-color', c);
+/* カラー */
+function setColor(c,btn){
+  document.body.setAttribute('data-color',c);
   document.querySelectorAll('.c-opt').forEach(el=>el.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  localStorage.setItem('aji_color', c);
+  if(btn)btn.classList.add('on');
+  localStorage.setItem('aji_color',c);
 }
 (function(){
-  const c = localStorage.getItem('aji_color')||'orange';
-  document.body.setAttribute('data-color', c);
-  const b = document.querySelector(`.c-opt[data-v="${c}"]`);
-  if(b){ document.querySelectorAll('.c-opt').forEach(el=>el.classList.remove('on')); b.classList.add('on'); }
+  const c=localStorage.getItem('aji_color')||'orange';
+  document.body.setAttribute('data-color',c);
+  const b=document.querySelector(`.c-opt[data-v="${c}"]`);
+  if(b){document.querySelectorAll('.c-opt').forEach(el=>el.classList.remove('on'));b.classList.add('on');}
 })();
 
-/* ===== SNS設定 ===== */
-const SNS_KEYS = ['shopName','shopArea','igAcc','fbAcc','lineUrl','shopTel'];
+/* SNS設定 */
+const SNS_KEYS=['shopName','shopArea','igAcc','fbAcc','lineUrl','shopTel'];
 function saveSettings(){
-  SNS_KEYS.forEach(k=> localStorage.setItem('aji_'+k, document.getElementById(k).value));
-  const btn = document.getElementById('saveBtn');
-  const orig = btn.textContent;
-  btn.textContent = '✅ 保存しました！';
-  btn.style.background = 'linear-gradient(135deg,#16a34a,#22c55e)';
-  setTimeout(()=>{ btn.textContent=orig; btn.style.background=''; closeModal(); }, 1400);
+  SNS_KEYS.forEach(k=>localStorage.setItem('aji_'+k,document.getElementById(k).value));
+  const btn=document.getElementById('saveBtn'),orig=btn.textContent;
+  btn.textContent='✅ 保存しました！';btn.style.background='linear-gradient(135deg,#16a34a,#22c55e)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';closeModal();},1400);
 }
-(function(){
-  SNS_KEYS.forEach(k=>{
-    const v = localStorage.getItem('aji_'+k);
-    if(v) document.getElementById(k).value = v;
-  });
-})();
+(function(){SNS_KEYS.forEach(k=>{const v=localStorage.getItem('aji_'+k);if(v)document.getElementById(k).value=v;});})();
 
-/* ===== 写真 ===== */
-let imgB64=null, imgType=null;
-function loadFile(e){ if(e.target.files[0]) readImg(e.target.files[0]); }
-function dOver(e){ e.preventDefault(); document.getElementById('upArea').classList.add('drag'); }
-function dLeave(){ document.getElementById('upArea').classList.remove('drag'); }
-function dDrop(e){ e.preventDefault(); document.getElementById('upArea').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f&&f.type.startsWith('image/')) readImg(f); }
+/* 写真 + スキャンアニメーション */
+let imgB64=null,imgType=null;
+function loadFile(e){if(e.target.files[0])readImg(e.target.files[0]);}
+function dOver(e){e.preventDefault();document.getElementById('upArea').classList.add('drag');}
+function dLeave(){document.getElementById('upArea').classList.remove('drag');}
+function dDrop(e){
+  e.preventDefault();document.getElementById('upArea').classList.remove('drag');
+  const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))readImg(f);
+}
 function readImg(file){
-  const r = new FileReader();
-  r.onload = ev=>{
+  const r=new FileReader();
+  r.onload=ev=>{
     const d=ev.target.result;
-    imgB64=d.split(',')[1]; imgType=file.type;
-    const p=document.getElementById('preview'); p.src=d; p.style.display='block';
+    imgB64=d.split(',')[1];imgType=file.type;
+    const p=document.getElementById('preview');
+    p.src=d;
+    // プレビュー表示
+    document.getElementById('previewWrap').classList.add('show');
     document.getElementById('rmBtn').style.display='block';
+    // スキャン開始
+    startScan();
   };
   r.readAsDataURL(file);
 }
-function removeImg(){
-  imgB64=null; imgType=null;
-  document.getElementById('preview').style.display='none';
-  document.getElementById('rmBtn').style.display='none';
-  document.getElementById('fileInput').value='';
+
+function startScan(){
+  const line    = document.getElementById('scanLine');
+  const overlay = document.getElementById('scanOverlay');
+  const done    = document.getElementById('scanDone');
+  const genBtn  = document.getElementById('genBtn');
+
+  // 初期化
+  done.classList.remove('show');
+  genBtn.classList.remove('ready');
+  line.classList.remove('scanning');
+  overlay.classList.remove('show');
+
+  // 少し待ってからスキャン開始
+  setTimeout(()=>{
+    overlay.classList.add('show');
+    line.classList.add('scanning');
+
+    // スキャン完了（3回 × 1.4秒 = 4.2秒後）
+    setTimeout(()=>{
+      line.classList.remove('scanning');
+      overlay.classList.remove('show');
+      done.classList.add('show');
+      genBtn.classList.add('ready');
+      // 完了バッジは3秒後に消える
+      setTimeout(()=>done.classList.remove('show'), 3000);
+    }, 4400);
+  }, 200);
 }
 
-/* ===== 生成 ===== */
+function removeImg(){
+  imgB64=null;imgType=null;
+  document.getElementById('preview').src='';
+  document.getElementById('previewWrap').classList.remove('show');
+  document.getElementById('rmBtn').style.display='none';
+  document.getElementById('fileInput').value='';
+  document.getElementById('scanDone').classList.remove('show');
+  document.getElementById('genBtn').classList.remove('ready');
+}
+
+/* 生成 */
 async function generate(){
-  const hint = document.getElementById('hint').value.trim();
-  if(!imgB64 && !hint){ showErr('写真またはメモを入力してください！'); return; }
-  setLoad(true); hideErr(); document.getElementById('resArea').classList.remove('on');
+  const hint=document.getElementById('hint').value.trim();
+  if(!imgB64&&!hint){showErr('写真またはメモを入力してください！');return;}
+  setLoad(true);hideErr();document.getElementById('resArea').classList.remove('on');
+  document.getElementById('genBtn').classList.remove('ready');
 
-  const uc = [];
-  if(imgB64) uc.push({ type:'image', source:{ type:'base64', media_type:imgType, data:imgB64 }});
-
-  const shop = localStorage.getItem('aji_shopName')||'';
-  const area = localStorage.getItem('aji_shopArea')||'';
-  const ig   = localStorage.getItem('aji_igAcc')||'';
-  const fb   = localStorage.getItem('aji_fbAcc')||'';
-  const line = localStorage.getItem('aji_lineUrl')||'';
-  const tel  = localStorage.getItem('aji_shopTel')||'';
-
-  let tp = '以下の情報からInstagram・Facebook・LINE配信の投稿文を生成してください。\n';
-  if(hint) tp += `メモ：${hint}\n`;
-  if(shop) tp += `店名：${shop}\n`;
-  if(area) tp += `エリア：${area}\n`;
-  if(ig)   tp += `Instagram：${ig}\n`;
-  if(fb)   tp += `Facebook：${fb}\n`;
-  if(line) tp += `LINE：${line}\n`;
-  if(tel)  tp += `電話：${tel}\n`;
-  uc.push({ type:'text', text:tp });
+  const uc=[];
+  if(imgB64)uc.push({type:'image',source:{type:'base64',media_type:imgType,data:imgB64}});
+  const shop=localStorage.getItem('aji_shopName')||'';
+  const area=localStorage.getItem('aji_shopArea')||'';
+  const ig=localStorage.getItem('aji_igAcc')||'';
+  const fb=localStorage.getItem('aji_fbAcc')||'';
+  const line=localStorage.getItem('aji_lineUrl')||'';
+  const tel=localStorage.getItem('aji_shopTel')||'';
+  let tp='以下の情報からInstagram・Facebook・LINE配信の投稿文を生成してください。\n';
+  if(hint)tp+=`メモ：${hint}\n`;
+  if(shop)tp+=`店名：${shop}\n`;
+  if(area)tp+=`エリア：${area}\n`;
+  if(ig)tp+=`Instagram：${ig}\n`;
+  if(fb)tp+=`Facebook：${fb}\n`;
+  if(line)tp+=`LINE：${line}\n`;
+  if(tel)tp+=`電話：${tel}\n`;
+  uc.push({type:'text',text:tp});
 
   const msgs=['料理の魅力を解析中...','言葉を選んでいます...','投稿文を仕上げています...'];
   let mi=0;
-  const timer=setInterval(()=>{ document.getElementById('ldTxt').textContent=msgs[mi++%msgs.length]; },1400);
-
-  try {
-    const res = await fetch(WORKER,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ messages:[{ role:'user', content:uc }] })
-    });
+  const timer=setInterval(()=>{document.getElementById('ldTxt').textContent=msgs[mi++%msgs.length];},1400);
+  try{
+    const res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:uc}]})});
     clearInterval(timer);
-    if(!res.ok) throw new Error('API error: '+res.status);
-    const data = await res.json();
-    parse(data.content?.[0]?.text || data.text || '');
-  } catch(e){
-    clearInterval(timer);
-    showErr('生成に失敗しました。通信環境をご確認ください。\n'+e.message);
-  } finally { setLoad(false); }
+    if(!res.ok)throw new Error('API error: '+res.status);
+    const data=await res.json();
+    parse(data.content?.[0]?.text||data.text||'');
+  }catch(e){clearInterval(timer);showErr('生成に失敗しました。通信環境をご確認ください。\n'+e.message);}
+  finally{setLoad(false);}
 }
-function retry(){ document.getElementById('hint').value+='（別パターンで）'; generate(); }
+function retry(){document.getElementById('hint').value+='（別パターンで）';generate();}
 
-/* ===== パース → テキストエリアに統合してセット ===== */
+/* パース */
 function parse(txt){
   let d=null;
-  try{ const m=txt.match(/\{[\s\S]*\}/); d=m?JSON.parse(m[0]):null; }catch(e){}
-
-  if(d && d.instagram){
-    // Instagram：タイトル＋本文＋ハッシュタグ＋来店誘導を1つに
-    setTA('ig', [
-      d.instagram.title  || '',
-      d.instagram.body   || '',
-      d.instagram.hashtags || '',
-      d.instagram.cta    || ''
-    ]);
-    // Facebook
-    setTA('fb', [
-      d.facebook?.title    || d.instagram.title    || '',
-      d.facebook?.body     || d.instagram.body     || '',
-      d.facebook?.hashtags || d.instagram.hashtags || '',
-      d.facebook?.cta      || d.instagram.cta      || ''
-    ]);
-    // LINE（ハッシュタグなし）
-    setTA('line', [
-      d.line?.title || d.instagram.title || '',
-      d.line?.body  || d.instagram.body  || '',
-      d.line?.cta   || d.instagram.cta   || ''
-    ]);
-  } else {
-    // フォールバック
-    setTA('ig',   ['✨ 今日のおすすめ！', txt, '#飲食店 #グルメ #今日のランチ #おいしい', 'ぜひお越しください😊']);
-    setTA('fb',   ['✨ 今日のおすすめ！', txt, '#グルメ #飲食店 #ランチ', 'お気軽にご来店ください🍽️']);
-    setTA('line', ['【今日のおすすめ】', txt, 'お待ちしております😊']);
+  try{const m=txt.match(/\{[\s\S]*\}/);d=m?JSON.parse(m[0]):null;}catch(e){}
+  if(d&&d.instagram){
+    setTA('ig',[d.instagram.title||'',d.instagram.body||'',d.instagram.hashtags||'',d.instagram.cta||'']);
+    setTA('fb',[d.facebook?.title||d.instagram.title||'',d.facebook?.body||d.instagram.body||'',d.facebook?.hashtags||d.instagram.hashtags||'',d.facebook?.cta||d.instagram.cta||'']);
+    setTA('line',[d.line?.title||d.instagram.title||'',d.line?.body||d.instagram.body||'',d.line?.cta||d.instagram.cta||'']);
+  }else{
+    setTA('ig',['✨ 今日のおすすめ！',txt,'#飲食店 #グルメ #今日のランチ #おいしい','ぜひお越しください😊']);
+    setTA('fb',['✨ 今日のおすすめ！',txt,'#グルメ #飲食店 #ランチ','お気軽にご来店ください🍽️']);
+    setTA('line',['【今日のおすすめ】',txt,'お待ちしております😊']);
   }
-
   document.getElementById('resArea').classList.add('on');
   document.getElementById('resArea').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-// パーツを改行2行あけて1つのテキストエリアにまとめる
-function setTA(id, parts){
-  const text = parts.filter(p=>p.trim()).join('\n\n');
-  document.getElementById('ta-'+id).value = text;
+function setTA(id,parts){
+  document.getElementById('ta-'+id).value=parts.filter(p=>p.trim()).join('\n\n');
 }
 
-/* ===== タブ ===== */
+/* タブ */
 function swTab(p,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('pc-'+p).classList.add('on');
+  btn.classList.add('on');document.getElementById('pc-'+p).classList.add('on');
 }
 
-/* ===== コピー ===== */
+/* コピー */
 function cpTA(p){
-  const ta  = document.getElementById('ta-'+p);
-  const btn = document.getElementById('cp-'+p);
-  const lbl = p==='ig'?'Instagram':p==='fb'?'Facebook':'LINE配信';
+  const ta=document.getElementById('ta-'+p);
+  const btn=document.getElementById('cp-'+p);
+  const lbl=p==='ig'?'Instagram':p==='fb'?'Facebook':'LINE配信';
   navigator.clipboard.writeText(ta.value).then(()=>{
-    btn.textContent = '✅ コピーしました！';
-    btn.classList.add('done');
-    setTimeout(()=>{ btn.textContent=`📋 ${lbl}投稿文をコピー`; btn.classList.remove('done'); }, 2500);
+    btn.textContent='✅ コピーしました！';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent=`📋 ${lbl}投稿文をコピー`;btn.classList.remove('done');},2500);
   });
 }
 
-/* ===== ユーティリティ ===== */
-function setLoad(on){ document.getElementById('loading').classList.toggle('on',on); document.getElementById('genBtn').disabled=on; }
-function showErr(m){ const e=document.getElementById('errBox'); e.textContent=m; e.classList.add('on'); }
-function hideErr(){ document.getElementById('errBox').classList.remove('on'); }
+/* ユーティリティ */
+function setLoad(on){document.getElementById('loading').classList.toggle('on',on);document.getElementById('genBtn').disabled=on;}
+function showErr(m){const e=document.getElementById('errBox');e.textContent=m;e.classList.add('on');}
+function hideErr(){document.getElementById('errBox').classList.remove('on');}
 </script>
 </body>
 </html>
