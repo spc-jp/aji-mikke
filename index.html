@@ -306,7 +306,7 @@ footer a{color:var(--pri);text-decoration:none;}
     <input type="password" id="pwInp" class="pw-inp" placeholder="パスワードを入力"/>
     <button class="pw-btn" onclick="checkPw()">✨ はじめる</button>
     <div id="pwErr" class="pw-err"></div>
-    <div class="pw-note">※ 無料トライアル期間：リリースから2ヶ月<br>ご購入いただいた方にパスワードをお送りします</div>
+    <div class="pw-note">※ 無料トライアル期間：3月31日まで<br>4月1日以降はパスワード（aji2025）が必要になります</div>
   </div>
 </div>
 
@@ -447,15 +447,13 @@ footer a{color:var(--pri);text-decoration:none;}
 </main>
 
 <footer>
-  <div class="badge">🎁 無料トライアル期間中</div>
-  <div>味みっけ by <a href="#" target="_blank">ビジネス気づき劇場</a></div>
-  <div style="margin-top:5px;">販売中 ▶ <a href="#" target="_blank">BASE</a> / <a href="#" target="_blank">note</a> ｜ 1,980円（税込）</div>
+  <div class="badge">🎁 3月31日まで 無料トライアル期間中</div>
 </footer>
 
 <script>
 const WORKER = 'https://aji-mikke-worker.yymmatsu.workers.dev/chat';
 const PW     = 'aji2025';
-const TRIAL  = new Date('2099-12-31');
+const TRIAL  = new Date('2026-04-01T00:00:00+09:00');
 
 /* パスワード */
 function checkPw(){
