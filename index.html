@@ -7,7 +7,6 @@
 <meta name="description" content="料理写真を1枚撮るだけ。Instagram・Facebook・LINE配信文をAIが30秒で自動生成。飲食店オーナー向けSNS投稿ツール。"/>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet"/>
 <style>
-/* ===== CSS変数 ===== */
 :root {
   --hgrad:linear-gradient(135deg,#c94d10 0%,#e8722a 40%,#f5a030 75%,#fcc84a 100%);
   --bgrad:linear-gradient(135deg,#d05a18 0%,#f08038 100%);
@@ -18,8 +17,7 @@
   --tx:#2a1a0e; --txs:#7a5a40;
   --shad:rgba(216,92,24,.10);
   --upbg:linear-gradient(135deg,#fff8f0,#fff0e0);
-  --scan:#f08038;
-  --r:16px;
+  --scan:#f08038; --r:16px;
   --font:'Zen Maru Gothic','Hiragino Kaku Gothic ProN',sans-serif;
 }
 [data-color="red"] {
@@ -68,15 +66,8 @@
   --upbg:linear-gradient(135deg,#201008,#301810); --scan:#c08060;
 }
 
-/* ===== ベース ===== */
 *{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--tx);
-  min-height:100vh;
-  transition:background .3s,color .3s;
-}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);min-height:100vh;transition:background .3s,color .3s;}
 
 /* ===== パスワード画面 ===== */
 #pwWrap{position:fixed;inset:0;background:var(--hgrad);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;}
@@ -93,59 +84,99 @@ body{
 .pw-err{font-size:.8rem;color:#dc2626;margin-top:8px;}
 .pw-note{font-size:.72rem;color:var(--txs);margin-top:14px;line-height:1.7;}
 
+/* ===== Stripeゲート画面 ===== */
+#gateWrap{position:fixed;inset:0;background:rgba(20,8,2,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:998;padding:20px;}
+#gateWrap.gone{display:none;}
+.gate-box{
+  background:linear-gradient(145deg,#2a1208,#3e1c0e);
+  border:1.5px solid rgba(255,160,60,.25);
+  border-radius:24px;padding:36px 28px;
+  width:min(90vw,380px);text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:gateIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes gateIn{0%{transform:scale(.88) translateY(30px);opacity:0;}100%{transform:scale(1) translateY(0);opacity:1;}}
+.gate-icon{font-size:3.2rem;display:block;margin-bottom:12px;animation:lockShake .5s ease-in-out;}
+@keyframes lockShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.gate-ttl{font-size:1.22rem;font-weight:900;color:#faecd8;margin-bottom:6px;line-height:1.5;}
+.gate-sub{font-size:.80rem;color:#c09060;line-height:1.8;margin-bottom:22px;}
+.gate-div{border:none;border-top:1px solid rgba(255,160,60,.20);margin:18px 0;}
+
+/* Stripeボタン */
+.stripe-btn{
+  display:block;width:100%;padding:16px;
+  background:linear-gradient(135deg,#e8722a 0%,#f5a030 100%);
+  color:#fff;font-size:1rem;font-weight:900;
+  border:none;border-radius:14px;cursor:pointer;
+  text-decoration:none;letter-spacing:.04em;
+  box-shadow:0 6px 22px rgba(232,114,42,.45);
+  font-family:var(--font);
+  transition:all .2s;
+  margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.stripe-btn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transition:left .5s;}
+.stripe-btn:hover::before{left:140%;}
+.stripe-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,114,42,.55);}
+.stripe-lock{font-size:.75rem;color:#c09060;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:4px;}
+
+/* パスワード入力エリア */
+.gate-pw-lbl{font-size:.72rem;color:#a07848;margin-bottom:8px;letter-spacing:.06em;}
+.gate-pw-inp{
+  width:100%;padding:13px;
+  border:1.5px solid rgba(255,160,60,.30);
+  border-radius:12px;
+  background:rgba(255,255,255,.07);
+  color:#faecd8;font-size:.95rem;
+  text-align:center;letter-spacing:.14em;
+  margin-bottom:10px;font-family:var(--font);
+}
+.gate-pw-inp:focus{outline:none;border-color:rgba(255,160,60,.70);}
+.gate-pw-inp::placeholder{color:rgba(200,150,90,.5);}
+.gate-enter-btn{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,#c88038,#e0a848);
+  color:#fff;font-size:.95rem;font-weight:800;
+  border:none;border-radius:12px;cursor:pointer;
+  box-shadow:0 4px 16px rgba(200,128,56,.35);
+  font-family:var(--font);transition:all .2s;
+}
+.gate-enter-btn:hover{opacity:.88;transform:translateY(-1px);}
+.gate-pw-err{font-size:.78rem;color:#f87070;margin-top:8px;}
+.gate-back{display:block;margin-top:14px;font-size:.75rem;color:#a07848;cursor:pointer;text-decoration:none;transition:color .15s;}
+.gate-back:hover{color:#fcc84a;}
+
+/* 残回数バッジ */
+.trial-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--acc);color:var(--tx);
+  font-size:.70rem;font-weight:700;
+  border-radius:20px;padding:4px 12px;
+  margin-bottom:6px;
+}
+
 /* ===== ヘッダー ===== */
-header{
-  background:var(--hgrad);
-  color:#fff;
-  position:relative;
-  overflow:hidden;
-  transition:background .4s;
-}
-/* 浮遊アイコン */
+header{background:var(--hgrad);color:#fff;position:relative;overflow:hidden;transition:background .4s;}
 .float-icons{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.fi{
-  position:absolute;
-  font-size:1.6rem;
-  opacity:.18;
-  animation:floatUp linear infinite;
-  user-select:none;
-}
-.fi:nth-child(1){left:5%;  animation-duration:7s; animation-delay:0s;   font-size:1.4rem;}
-.fi:nth-child(2){left:15%; animation-duration:9s; animation-delay:1.5s; font-size:1.8rem;}
-.fi:nth-child(3){left:25%; animation-duration:6s; animation-delay:0.8s; font-size:1.2rem;}
-.fi:nth-child(4){left:40%; animation-duration:8s; animation-delay:2s;   font-size:2rem;}
-.fi:nth-child(5){left:55%; animation-duration:7.5s;animation-delay:0.3s;font-size:1.5rem;}
-.fi:nth-child(6){left:68%; animation-duration:10s; animation-delay:1s;  font-size:1.3rem;}
-.fi:nth-child(7){left:78%; animation-duration:6.5s;animation-delay:2.5s;font-size:1.7rem;}
-.fi:nth-child(8){left:88%; animation-duration:8.5s;animation-delay:0.5s;font-size:1.4rem;}
-.fi:nth-child(9){left:95%; animation-duration:7s;  animation-delay:3s;  font-size:1.2rem;}
-@keyframes floatUp{
-  0%  {transform:translateY(120%) rotate(0deg);  opacity:0;}
-  10% {opacity:.18;}
-  90% {opacity:.18;}
-  100%{transform:translateY(-120%) rotate(25deg);opacity:0;}
-}
-
-/* グリッド背景 */
-header::before{
-  content:'';
-  position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23ffffff' fill-opacity='0.08'/%3E%3C/svg%3E");
-  pointer-events:none;
-}
+.fi{position:absolute;font-size:1.6rem;opacity:.18;animation:floatUp linear infinite;user-select:none;}
+.fi:nth-child(1){left:5%;animation-duration:7s;animation-delay:0s;font-size:1.4rem;}
+.fi:nth-child(2){left:15%;animation-duration:9s;animation-delay:1.5s;font-size:1.8rem;}
+.fi:nth-child(3){left:25%;animation-duration:6s;animation-delay:.8s;font-size:1.2rem;}
+.fi:nth-child(4){left:40%;animation-duration:8s;animation-delay:2s;font-size:2rem;}
+.fi:nth-child(5){left:55%;animation-duration:7.5s;animation-delay:.3s;font-size:1.5rem;}
+.fi:nth-child(6){left:68%;animation-duration:10s;animation-delay:1s;font-size:1.3rem;}
+.fi:nth-child(7){left:78%;animation-duration:6.5s;animation-delay:2.5s;font-size:1.7rem;}
+.fi:nth-child(8){left:88%;animation-duration:8.5s;animation-delay:.5s;font-size:1.4rem;}
+.fi:nth-child(9){left:95%;animation-duration:7s;animation-delay:3s;font-size:1.2rem;}
+@keyframes floatUp{0%{transform:translateY(120%) rotate(0deg);opacity:0;}10%{opacity:.18;}90%{opacity:.18;}100%{transform:translateY(-120%) rotate(25deg);opacity:0;}}
+header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23ffffff' fill-opacity='0.08'/%3E%3C/svg%3E");pointer-events:none;}
 header::after{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,transparent 100%);pointer-events:none;}
-
 .h-inner{position:relative;z-index:1;text-align:center;padding:32px 60px 26px;}
 .h-icon{font-size:3rem;display:block;margin-bottom:8px;animation:hBounce 2.4s ease-in-out infinite;}
 @keyframes hBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.h-ttl{
-  font-size:2.1rem;font-weight:900;letter-spacing:.08em;
-  text-shadow:0 3px 14px rgba(0,0,0,.25);
-}
+.h-ttl{font-size:2.1rem;font-weight:900;letter-spacing:.08em;text-shadow:0 3px 14px rgba(0,0,0,.25);}
 .h-sub-en{display:block;font-size:.70rem;font-weight:500;opacity:.88;margin-top:4px;letter-spacing:.20em;}
 .h-sub{font-size:.82rem;opacity:.90;margin-top:10px;line-height:1.7;font-weight:500;}
-
-/* 歯車 */
 .gear-btn{position:absolute;top:14px;right:14px;z-index:10;width:46px;height:46px;border:none;border-radius:50%;background:rgba(255,255,255,.22);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.30);transition:background .2s;}
 .gear-btn:hover{background:rgba(255,255,255,.38);}
 .gear-btn svg{width:22px;height:22px;fill:#fff;transition:transform .5s cubic-bezier(.34,1.56,.64,1);}
@@ -190,38 +221,10 @@ hr.s-div{border:none;border-top:1px solid var(--bdr);margin:16px 0;}
 
 /* ===== メイン ===== */
 main{max-width:680px;margin:0 auto;padding:22px 15px 80px;}
-
-/* カード */
-.card{
-  background:var(--card);
-  border:1.5px solid var(--bdr);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 4px 18px var(--shad);
-  transition:transform .2s;
-}
+.card{background:var(--card);border:1.5px solid var(--bdr);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 18px var(--shad);}
 .card-ttl{font-size:.76rem;font-weight:700;letter-spacing:.10em;color:var(--pri);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-
-/* アップロードエリア */
-.up-area{
-  border:3px dashed var(--plight);
-  border-radius:16px;
-  background:var(--upbg);
-  text-align:center;
-  padding:32px 14px;
-  cursor:pointer;
-  transition:all .25s;
-  position:relative;
-  overflow:hidden;
-}
-.up-area::after{
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 60%);
-  pointer-events:none;
-  border-radius:14px;
-}
+.up-area{border:3px dashed var(--plight);border-radius:16px;background:var(--upbg);text-align:center;padding:32px 14px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.up-area::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 60%);pointer-events:none;border-radius:14px;}
 .up-area:hover{border-color:var(--pri);transform:scale(1.015);box-shadow:0 6px 20px var(--shad);}
 .up-area.drag{border-color:var(--pri);transform:scale(1.02);}
 .up-icon{font-size:3rem;display:block;margin-bottom:10px;animation:upIconBounce 2s ease-in-out infinite;}
@@ -229,8 +232,6 @@ main{max-width:680px;margin:0 auto;padding:22px 15px 80px;}
 .up-txt{font-size:.90rem;color:var(--txs);line-height:1.8;position:relative;z-index:1;}
 .up-txt strong{color:var(--pri);font-size:.98rem;font-weight:800;}
 #fileInput{display:none;}
-
-/* スキャンアニメーション */
 .preview-wrap{position:relative;display:none;margin-top:14px;border-radius:14px;overflow:hidden;}
 .preview-wrap.show{display:block;}
 #preview{width:100%;max-height:260px;object-fit:cover;border-radius:14px;display:block;box-shadow:0 6px 18px rgba(0,0,0,.14);}
@@ -239,7 +240,7 @@ main{max-width:680px;margin:0 auto;padding:22px 15px 80px;}
 @keyframes scanMove{0%{top:0%;opacity:0;}5%{opacity:1;}95%{opacity:1;}100%{top:100%;opacity:0;}}
 .scan-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;border-radius:14px;}
 .scan-overlay.show{background:rgba(0,0,0,.30);opacity:1;}
-.scan-label{color:#fff;font-size:.84rem;font-weight:700;letter-spacing:.10em;text-shadow:0 1px 6px rgba(0,0,0,.6);margin-top:8px;animation:scanPulse 1s ease-in-out infinite;}
+.scan-label{color:#fff;font-size:.84rem;font-weight:700;letter-spacing:.10em;text-shadow:0 1px 6px rgba(0,0,0,.6);animation:scanPulse 1s ease-in-out infinite;}
 @keyframes scanPulse{0%,100%{opacity:.7;}50%{opacity:1;}}
 .scan-corner{position:absolute;width:20px;height:20px;z-index:4;}
 .scan-corner.tl{top:8px;left:8px;border-top:3px solid var(--scan);border-left:3px solid var(--scan);border-radius:3px 0 0 0;}
@@ -249,7 +250,6 @@ main{max-width:680px;margin:0 auto;padding:22px 15px 80px;}
 .scan-done{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(34,197,94,.92);color:#fff;font-size:.74rem;font-weight:800;padding:5px 16px;border-radius:20px;letter-spacing:.06em;z-index:5;display:none;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.2);}
 .scan-done.show{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
 @keyframes popIn{0%{transform:translateX(-50%) scale(.6);opacity:0;}100%{transform:translateX(-50%) scale(1);opacity:1;}}
-
 .rm-btn{display:none;margin:10px auto 0;background:var(--bg);border:1.5px solid var(--plight);color:var(--pri);border-radius:10px;padding:6px 16px;font-size:.78rem;cursor:pointer;transition:all .15s;font-family:var(--font);font-weight:600;}
 .rm-btn:hover{background:var(--pri);color:#fff;}
 .hint-wrap{margin-top:14px;}
@@ -257,25 +257,14 @@ main{max-width:680px;margin:0 auto;padding:22px 15px 80px;}
 textarea.hint{width:100%;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:12px;background:var(--surf);color:var(--tx);font-size:.88rem;font-family:var(--font);resize:vertical;line-height:1.8;transition:border-color .2s;}
 textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(216,92,24,.10);}
 
-/* ===== 生成ボタン ===== */
-.gen-btn{
-  width:100%;padding:18px;
-  background:var(--bgrad);
-  color:#fff;font-size:1.08rem;font-weight:900;
-  border:none;border-radius:16px;cursor:pointer;
-  letter-spacing:.07em;
-  box-shadow:0 6px 24px var(--bshadow);
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  margin-bottom:14px;
-  position:relative;overflow:hidden;
-  transition:all .2s;
-  font-family:var(--font);
-}
-.gen-btn::before{
-  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
-  transition:left .5s;
-}
+/* 残回数表示 */
+.trial-info{text-align:center;margin-bottom:10px;font-size:.78rem;color:var(--txs);font-weight:600;}
+.trial-count{display:inline-flex;gap:5px;margin-top:4px;}
+.trial-dot{width:12px;height:12px;border-radius:50%;background:var(--bdr);transition:background .3s;}
+.trial-dot.used{background:var(--pri);}
+
+.gen-btn{width:100%;padding:18px;background:var(--bgrad);color:#fff;font-size:1.08rem;font-weight:900;border:none;border-radius:16px;cursor:pointer;letter-spacing:.07em;box-shadow:0 6px 24px var(--bshadow);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;position:relative;overflow:hidden;transition:all .2s;font-family:var(--font);}
+.gen-btn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:left .5s;}
 .gen-btn:hover::before{left:140%;}
 .gen-btn::after{content:'';position:absolute;top:0;left:0;right:0;height:48%;background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,transparent 100%);pointer-events:none;}
 .gen-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 10px 32px var(--bshadow);}
@@ -283,20 +272,13 @@ textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rg
 .gen-btn.ready{animation:btnGlow 1.8s ease-in-out infinite;}
 @keyframes btnGlow{0%,100%{box-shadow:0 6px 24px var(--bshadow);}50%{box-shadow:0 6px 36px var(--bshadow),0 0 0 5px rgba(255,255,255,.16);}}
 
-/* ===== ローディング（料理アニメーション） ===== */
 .loading{display:none;text-align:center;padding:32px 20px;}
 .loading.on{display:block;}
 .cook-wrap{position:relative;display:inline-block;margin-bottom:12px;}
 .cook-pan{font-size:3.2rem;display:inline-block;animation:panShake .5s ease-in-out infinite alternate;}
 @keyframes panShake{0%{transform:rotate(-12deg) translateY(0);}100%{transform:rotate(12deg) translateY(-4px);}}
-.cook-steam{
-  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
-  display:flex;gap:5px;
-}
-.steam{
-  font-size:1rem;opacity:.7;
-  animation:steamRise 1.2s ease-in-out infinite;
-}
+.cook-steam{position:absolute;top:-18px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
+.steam{font-size:1rem;opacity:.7;animation:steamRise 1.2s ease-in-out infinite;}
 .steam:nth-child(2){animation-delay:.3s;font-size:.8rem;}
 .steam:nth-child(3){animation-delay:.6s;}
 @keyframes steamRise{0%{transform:translateY(0);opacity:.7;}100%{transform:translateY(-16px);opacity:0;}}
@@ -304,30 +286,18 @@ textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rg
 .ld-steps{display:flex;justify-content:center;gap:6px;}
 .ld-step{width:8px;height:8px;background:var(--bdr);border-radius:50%;transition:background .3s,transform .3s;}
 .ld-step.on{background:var(--pri);transform:scale(1.4);}
-
 .err{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:14px;padding:14px;color:#dc2626;font-size:.86rem;margin-top:10px;display:none;font-weight:600;}
 .err.on{display:block;}
 
-/* ===== 結果エリア ===== */
 #resArea{display:none;}
 #resArea.on{display:block;animation:resAppear .5s cubic-bezier(.34,1.56,.64,1);}
 @keyframes resAppear{0%{opacity:0;transform:translateY(24px) scale(.97);}100%{opacity:1;transform:translateY(0) scale(1);}}
-
-/* 完成バナー */
-.res-banner{
-  background:var(--bgrad);
-  border-radius:16px 16px 0 0;
-  padding:16px 18px 14px;
-  display:flex;align-items:center;gap:10px;
-  margin:-20px -20px 16px;
-}
+.res-banner{background:var(--bgrad);border-radius:16px 16px 0 0;padding:16px 18px 14px;display:flex;align-items:center;gap:10px;margin:-20px -20px 16px;}
 .res-banner-icon{font-size:2rem;animation:plateSpin .6s cubic-bezier(.34,1.56,.64,1);}
 @keyframes plateSpin{0%{transform:scale(0) rotate(-180deg);opacity:0;}100%{transform:scale(1) rotate(0deg);opacity:1;}}
 .res-banner-txt{color:#fff;}
 .res-ttl{font-size:1.05rem;font-weight:900;margin-bottom:2px;}
 .res-sub{font-size:.74rem;opacity:.90;}
-
-/* タブ */
 .tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .tab{padding:8px 16px;border:2px solid var(--bdr);border-radius:22px;font-size:.80rem;font-weight:700;cursor:pointer;background:var(--surf);color:var(--txs);transition:all .18s;font-family:var(--font);}
 .tab.on{background:var(--bgrad);color:#fff;border-color:transparent;box-shadow:0 3px 10px var(--bshadow);transform:translateY(-1px);}
@@ -335,67 +305,25 @@ textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rg
 .pc{display:none;}
 .pc.on{display:block;animation:fadeIn .3s ease;}
 @keyframes fadeIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
-
-/* テキストエリア */
-.post-area{
-  width:100%;min-height:290px;padding:15px;
-  border:2px solid var(--bdr);border-radius:14px;
-  background:var(--surf);color:var(--tx);
-  font-size:.93rem;font-family:var(--font);
-  line-height:1.9;resize:vertical;
-  transition:border-color .2s;
-}
+.post-area{width:100%;min-height:290px;padding:15px;border:2px solid var(--bdr);border-radius:14px;background:var(--surf);color:var(--tx);font-size:.93rem;font-family:var(--font);line-height:1.9;resize:vertical;transition:border-color .2s;}
 .post-area:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(216,92,24,.10);}
 .post-hint{font-size:.72rem;color:var(--txs);margin-top:7px;margin-bottom:11px;font-weight:500;}
-
-/* コピーボタン */
-.cp-btn-big{
-  width:100%;padding:15px;
-  background:var(--bgrad);color:#fff;
-  font-size:.96rem;font-weight:800;
-  border:none;border-radius:13px;cursor:pointer;
-  box-shadow:0 5px 18px var(--bshadow);
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  transition:all .2s;letter-spacing:.04em;
-  font-family:var(--font);
-}
+.cp-btn-big{width:100%;padding:15px;background:var(--bgrad);color:#fff;font-size:.96rem;font-weight:800;border:none;border-radius:13px;cursor:pointer;box-shadow:0 5px 18px var(--bshadow);display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;letter-spacing:.04em;font-family:var(--font);}
 .cp-btn-big:hover{opacity:.88;transform:translateY(-2px);}
 .cp-btn-big.done{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 5px 18px rgba(22,163,74,.32);}
-
-.retry{
-  width:100%;padding:12px;
-  background:var(--bg);border:2px solid var(--bdr);
-  color:var(--txs);font-size:.86rem;border-radius:13px;
-  cursor:pointer;margin-top:10px;
-  transition:all .2s;font-family:var(--font);font-weight:600;
-}
+.retry{width:100%;padding:12px;background:var(--bg);border:2px solid var(--bdr);color:var(--txs);font-size:.86rem;border-radius:13px;cursor:pointer;margin-top:10px;transition:all .2s;font-family:var(--font);font-weight:600;}
 .retry:hover{border-color:var(--pri);color:var(--pri);transform:translateY(-1px);}
 
-/* ===== フッター ===== */
 footer{text-align:center;padding:28px 14px;font-size:.75rem;color:var(--txs);border-top:1.5px solid var(--bdr);}
-footer a{color:var(--pri);text-decoration:none;}
-.badge{
-  display:inline-block;
-  background:var(--bgrad);
-  color:#fff;
-  font-size:.72rem;font-weight:700;
-  border-radius:20px;padding:5px 16px;
-  margin-bottom:10px;
-  box-shadow:0 3px 10px var(--bshadow);
-  animation:badgePulse 2s ease-in-out infinite;
-}
+.badge{display:inline-block;background:var(--bgrad);color:#fff;font-size:.72rem;font-weight:700;border-radius:20px;padding:5px 16px;margin-bottom:10px;box-shadow:0 3px 10px var(--bshadow);animation:badgePulse 2s ease-in-out infinite;}
 @keyframes badgePulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
 
-@media(max-width:480px){
-  .h-ttl{font-size:1.7rem;}
-  .h-inner{padding:26px 56px 20px;}
-  .gen-btn{font-size:.95rem;padding:16px;}
-}
+@media(max-width:480px){.h-ttl{font-size:1.7rem;}.h-inner{padding:26px 56px 20px;}.gen-btn{font-size:.95rem;padding:16px;}}
 </style>
 </head>
 <body data-color="orange">
 
-<!-- パスワード -->
+<!-- パスワード画面 -->
 <div id="pwWrap">
   <div class="pw-box">
     <span class="pw-icon">🍽️</span>
@@ -404,22 +332,37 @@ footer a{color:var(--pri);text-decoration:none;}
     <input type="password" id="pwInp" class="pw-inp" placeholder="パスワードを入力"/>
     <button class="pw-btn" onclick="checkPw()">✨ はじめる</button>
     <div id="pwErr" class="pw-err"></div>
-    <div class="pw-note">※ 無料トライアル期間：リリースから2ヶ月<br>ご購入いただいた方にパスワードをお送りします</div>
+    <div class="pw-note">月額2,980円でご利用いただけます<br>ご購入後にパスワードをお送りします</div>
+  </div>
+</div>
+
+<!-- Stripeゲート画面 -->
+<div id="gateWrap" class="gone">
+  <div class="gate-box">
+    <span class="gate-icon">🔒</span>
+    <div class="gate-ttl">続きをご利用いただくには<br>サブスクリプションが必要です</div>
+    <div class="gate-sub">無料トライアル（3回）を使い切りました。<br>月額2,980円で無制限にご利用いただけます。</div>
+
+    <a class="stripe-btn" href="https://buy.stripe.com/7sY28q22mfvDdhdf3mcV20d" target="_blank">
+      🔒 安全なStripeで購入する（月額2,980円）
+    </a>
+    <div class="stripe-lock">🛡️ SSL暗号化通信で安全に決済されます</div>
+
+    <hr class="gate-div"/>
+    <div class="gate-pw-lbl">すでにパスワードをお持ちの方</div>
+    <input type="password" id="gatePwInp" class="gate-pw-inp" placeholder="パスワードを入力"/>
+    <button class="gate-enter-btn" onclick="gateEnter()">✅ 入室してSNS投稿文を作る</button>
+    <div id="gatePwErr" class="gate-pw-err"></div>
+    <a class="gate-back" onclick="gateBack()">← 戻る</a>
   </div>
 </div>
 
 <!-- ヘッダー -->
 <header>
   <div class="float-icons">
-    <span class="fi">🍜</span>
-    <span class="fi">🍕</span>
-    <span class="fi">⭐</span>
-    <span class="fi">🍣</span>
-    <span class="fi">🔥</span>
-    <span class="fi">🍰</span>
-    <span class="fi">✨</span>
-    <span class="fi">🥗</span>
-    <span class="fi">🍺</span>
+    <span class="fi">🍜</span><span class="fi">🍕</span><span class="fi">⭐</span>
+    <span class="fi">🍣</span><span class="fi">🔥</span><span class="fi">🍰</span>
+    <span class="fi">✨</span><span class="fi">🥗</span><span class="fi">🍺</span>
   </div>
   <div class="h-inner">
     <span class="h-icon">🍽️</span>
@@ -494,20 +437,14 @@ footer a{color:var(--pri);text-decoration:none;}
       </div>
     </div>
     <input type="file" id="fileInput" accept="image/*" onchange="loadFile(event)"/>
-
     <div class="preview-wrap" id="previewWrap">
       <img id="preview" alt="プレビュー"/>
       <div class="scan-line" id="scanLine"></div>
-      <div class="scan-overlay" id="scanOverlay">
-        <div class="scan-label">🔍 画像を解析中...</div>
-      </div>
-      <div class="scan-corner tl"></div>
-      <div class="scan-corner tr"></div>
-      <div class="scan-corner bl"></div>
-      <div class="scan-corner br"></div>
+      <div class="scan-overlay" id="scanOverlay"><div class="scan-label">🔍 画像を解析中...</div></div>
+      <div class="scan-corner tl"></div><div class="scan-corner tr"></div>
+      <div class="scan-corner bl"></div><div class="scan-corner br"></div>
       <div class="scan-done" id="scanDone">✅ 画像の読み取り完了！</div>
     </div>
-
     <button class="rm-btn" id="rmBtn" onclick="removeImg()">✕ 写真を外す</button>
     <div class="hint-wrap">
       <div class="hint-lbl">💬 メモ・ヒント（任意でどうぞ）</div>
@@ -516,28 +453,24 @@ footer a{color:var(--pri);text-decoration:none;}
     </div>
   </div>
 
+  <!-- 残回数表示 -->
+  <div class="trial-info" id="trialInfo">
+    <div>無料トライアル残り回数</div>
+    <div class="trial-count" id="trialDots"></div>
+  </div>
+
   <button class="gen-btn" id="genBtn" onclick="generate()">🍳 調理開始！SNS投稿文をつくる</button>
   <div class="err" id="errBox"></div>
 
-  <!-- 料理アニメーション ローディング -->
   <div class="loading" id="loading">
     <div class="cook-wrap">
-      <div class="cook-steam">
-        <span class="steam">💨</span>
-        <span class="steam">💨</span>
-        <span class="steam">💨</span>
-      </div>
+      <div class="cook-steam"><span class="steam">💨</span><span class="steam">💨</span><span class="steam">💨</span></div>
       <span class="cook-pan">🍳</span>
     </div>
     <div class="ld-txt" id="ldTxt">料理の魅力を解析中...</div>
-    <div class="ld-steps">
-      <div class="ld-step on" id="step0"></div>
-      <div class="ld-step" id="step1"></div>
-      <div class="ld-step" id="step2"></div>
-    </div>
+    <div class="ld-steps"><div class="ld-step on" id="step0"></div><div class="ld-step" id="step1"></div><div class="ld-step" id="step2"></div></div>
   </div>
 
-  <!-- 結果 -->
   <div id="resArea">
     <div class="card">
       <div class="res-banner">
@@ -547,13 +480,11 @@ footer a{color:var(--pri);text-decoration:none;}
           <div class="res-sub">直接編集できます。コピーしてそのまま貼り付けてください😊</div>
         </div>
       </div>
-
       <div class="tabs">
         <button class="tab on" onclick="swTab('ig',this)">📸 Instagram</button>
         <button class="tab" onclick="swTab('fb',this)">👥 Facebook</button>
         <button class="tab" onclick="swTab('line',this)">💬 LINE配信</button>
       </div>
-
       <div class="pc on" id="pc-ig">
         <textarea class="post-area" id="ta-ig" spellcheck="false"></textarea>
         <div class="post-hint">✏️ 直接編集できます。編集後にコピーしてください。</div>
@@ -569,45 +500,91 @@ footer a{color:var(--pri);text-decoration:none;}
         <div class="post-hint">✏️ 直接編集できます。編集後にコピーしてください。</div>
         <button class="cp-btn-big" id="cp-line" onclick="cpTA('line')">📋 LINE配信文をコピー</button>
       </div>
-
       <button class="retry" onclick="retry()">🔄 別パターンで生成し直す</button>
     </div>
   </div>
 </main>
 
 <footer>
-  <div class="badge">🎁 無料トライアル期間中</div>
+  <div class="badge">🍽️ 味みっけ｜月額2,980円</div>
   <div>味みっけ</div>
   <div style="margin-top:4px;">Developed by SPC</div>
 </footer>
 
 <script>
-const WORKER = 'https://aji-mikke-worker.yymmatsu.workers.dev/chat';
-const PW     = 'aji2025';
-const TRIAL  = new Date('2099-12-31');
+const WORKER      = 'https://aji-mikke-worker.yymmatsu.workers.dev/chat';
+const PW          = 'aji2025';
+const TRIAL_LIMIT = 3;
+const STRIPE_URL  = 'https://buy.stripe.com/7sY28q22mfvDdhdf3mcV20d';
+const TRIAL_KEY   = 'aji_trial_count';
+const AUTH_KEY    = 'aji_authed';
 
-/* パスワード */
+/* ===== 認証チェック ===== */
+function isAuthed(){ return localStorage.getItem(AUTH_KEY)==='1'; }
+function getCount(){ return parseInt(localStorage.getItem(TRIAL_KEY)||'0'); }
+function addCount(){ localStorage.setItem(TRIAL_KEY, getCount()+1); }
+
+/* ===== 残回数UI ===== */
+function updateTrialUI(){
+  if(isAuthed()){ document.getElementById('trialInfo').style.display='none'; return; }
+  const used = getCount();
+  const rem  = TRIAL_LIMIT - used;
+  const dots = document.getElementById('trialDots');
+  dots.innerHTML='';
+  for(let i=0;i<TRIAL_LIMIT;i++){
+    const d=document.createElement('div');
+    d.className='trial-dot'+(i<used?' used':'');
+    dots.appendChild(d);
+  }
+  document.getElementById('trialInfo').style.display = rem>0 ? 'block' : 'none';
+}
+
+/* ===== パスワード画面 ===== */
 function checkPw(){
   const v=document.getElementById('pwInp').value.trim();
-  if(v===PW||new Date()<=TRIAL){
-    sessionStorage.setItem('aji_ok','1');
+  if(v===PW){
+    localStorage.setItem(AUTH_KEY,'1');
     document.getElementById('pwWrap').classList.add('gone');
+    updateTrialUI();
+  }else if(getCount()<TRIAL_LIMIT){
+    document.getElementById('pwWrap').classList.add('gone');
+    updateTrialUI();
   }else{
     document.getElementById('pwErr').textContent='パスワードが違います。';
   }
 }
+/* パスワード未入力で「はじめる」→ 無料枠チェック */
 (function(){
-  if(new Date()<=TRIAL||sessionStorage.getItem('aji_ok')==='1')
+  if(isAuthed()){
     document.getElementById('pwWrap').classList.add('gone');
+  } else if(getCount()<TRIAL_LIMIT){
+    document.getElementById('pwWrap').classList.add('gone');
+  }
+  updateTrialUI();
 })();
 document.getElementById('pwInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
 
-/* モーダル */
+/* ===== ゲート画面 ===== */
+function showGate(){ document.getElementById('gateWrap').classList.remove('gone'); }
+function gateBack(){ document.getElementById('gateWrap').classList.add('gone'); }
+function gateEnter(){
+  const v=document.getElementById('gatePwInp').value.trim();
+  if(v===PW){
+    localStorage.setItem(AUTH_KEY,'1');
+    document.getElementById('gateWrap').classList.add('gone');
+    updateTrialUI();
+  }else{
+    document.getElementById('gatePwErr').textContent='パスワードが違います。';
+  }
+}
+document.getElementById('gatePwInp').addEventListener('keydown',e=>{if(e.key==='Enter')gateEnter();});
+
+/* ===== モーダル ===== */
 function openModal(){document.getElementById('modalOv').classList.add('open');}
 function closeModal(){document.getElementById('modalOv').classList.remove('open');}
 function bgClose(e){if(e.target===document.getElementById('modalOv'))closeModal();}
 
-/* テーマ */
+/* ===== テーマ ===== */
 function setTheme(m){
   document.body.setAttribute('data-theme',m==='dark'?'dark':'');
   document.getElementById('tLight').classList.toggle('on',m==='light');
@@ -616,7 +593,7 @@ function setTheme(m){
 }
 (function(){setTheme(localStorage.getItem('aji_theme')||'light');})();
 
-/* カラー */
+/* ===== カラー ===== */
 function setColor(c,btn){
   document.body.setAttribute('data-color',c);
   document.querySelectorAll('.c-opt').forEach(el=>el.classList.remove('on'));
@@ -630,7 +607,7 @@ function setColor(c,btn){
   if(b){document.querySelectorAll('.c-opt').forEach(el=>el.classList.remove('on'));b.classList.add('on');}
 })();
 
-/* SNS設定 */
+/* ===== SNS設定 ===== */
 const SNS_KEYS=['shopName','shopArea','igAcc','fbAcc','lineUrl','shopTel'];
 function saveSettings(){
   SNS_KEYS.forEach(k=>localStorage.setItem('aji_'+k,document.getElementById(k).value));
@@ -640,7 +617,7 @@ function saveSettings(){
 }
 (function(){SNS_KEYS.forEach(k=>{const v=localStorage.getItem('aji_'+k);if(v)document.getElementById(k).value=v;});})();
 
-/* 写真 */
+/* ===== 写真 ===== */
 let imgB64=null,imgType=null;
 function loadFile(e){if(e.target.files[0])readImg(e.target.files[0]);}
 function dOver(e){e.preventDefault();document.getElementById('upArea').classList.add('drag');}
@@ -687,7 +664,7 @@ function removeImg(){
   document.getElementById('genBtn').classList.remove('ready');
 }
 
-/* ローディングステップ */
+/* ===== ローディング ===== */
 const ldMsgs=['料理の魅力を解析中...','言葉を選んでいます...','投稿文を仕上げています...'];
 let ldTimer=null,ldStep=0;
 function startLd(){
@@ -702,10 +679,16 @@ function startLd(){
 }
 function stopLd(){clearInterval(ldTimer);}
 
-/* 生成 */
+/* ===== 生成 ===== */
 async function generate(){
+  /* 回数チェック */
+  if(!isAuthed() && getCount()>=TRIAL_LIMIT){
+    showGate(); return;
+  }
+
   const hint=document.getElementById('hint').value.trim();
   if(!imgB64&&!hint){showErr('写真またはメモを入力してください！');return;}
+
   setLoad(true);hideErr();document.getElementById('resArea').classList.remove('on');
   document.getElementById('genBtn').classList.remove('ready');
   startLd();
@@ -733,6 +716,8 @@ async function generate(){
     stopLd();
     if(!res.ok)throw new Error('API error: '+res.status);
     const data=await res.json();
+    /* 成功したら回数をカウント */
+    if(!isAuthed()){ addCount(); updateTrialUI(); }
     parse(data.content?.[0]?.text||data.text||'');
   }catch(e){
     stopLd();
@@ -741,7 +726,7 @@ async function generate(){
 }
 function retry(){document.getElementById('hint').value+='（別パターンで）';generate();}
 
-/* パース */
+/* ===== パース ===== */
 function parse(txt){
   let d=null;
   try{const m=txt.match(/\{[\s\S]*\}/);d=m?JSON.parse(m[0]):null;}catch(e){}
@@ -761,14 +746,14 @@ function setTA(id,parts){
   document.getElementById('ta-'+id).value=parts.filter(p=>p.trim()).join('\n\n');
 }
 
-/* タブ */
+/* ===== タブ ===== */
 function swTab(p,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.pc').forEach(c=>c.classList.remove('on'));
   btn.classList.add('on');document.getElementById('pc-'+p).classList.add('on');
 }
 
-/* コピー */
+/* ===== コピー ===== */
 function cpTA(p){
   const ta=document.getElementById('ta-'+p);
   const btn=document.getElementById('cp-'+p);
@@ -779,7 +764,7 @@ function cpTA(p){
   });
 }
 
-/* ユーティリティ */
+/* ===== ユーティリティ ===== */
 function setLoad(on){
   document.getElementById('loading').classList.toggle('on',on);
   document.getElementById('genBtn').disabled=on;
