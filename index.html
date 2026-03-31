@@ -257,11 +257,14 @@ main{max-width:680px;margin:0 auto;padding:22px 15px 80px;}
 textarea.hint{width:100%;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:12px;background:var(--surf);color:var(--tx);font-size:.88rem;font-family:var(--font);resize:vertical;line-height:1.8;transition:border-color .2s;}
 textarea.hint:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(216,92,24,.10);}
 
-/* 残回数表示 */
-.trial-info{text-align:center;margin-bottom:10px;font-size:.78rem;color:var(--txs);font-weight:600;}
-.trial-count{display:inline-flex;gap:5px;margin-top:4px;}
-.trial-dot{width:12px;height:12px;border-radius:50%;background:var(--bdr);transition:background .3s;}
-.trial-dot.used{background:var(--pri);}
+/* 残回数バナー */
+.trial-banner{text-align:center;margin-bottom:12px;font-size:.85rem;font-weight:800;border-radius:12px;padding:12px 16px;box-shadow:0 4px 12px rgba(0,0,0,.08);transition:all .3s;display:flex;align-items:center;justify-content:center;line-height:1.4;}
+.trial-banner.gold{background:linear-gradient(135deg,#fff3cd 0%,#ffecb3 100%);border:1.5px solid #ffe082;color:#b07d00;}
+.trial-banner.red{background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);border:1.5px solid #fca5a5;color:#dc2626;cursor:pointer;}
+.trial-banner.red:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(220,38,38,.15);}
+.trial-banner.hidden{display:none;}
+[data-theme="dark"] .trial-banner.gold{background:linear-gradient(135deg,#4a3600 0%,#5c4300 100%);border-color:#7a5c00;color:#ffecb3;}
+[data-theme="dark"] .trial-banner.red{background:linear-gradient(135deg,#4a0f0f 0%,#5c1414 100%);border-color:#7a1a1a;color:#fecaca;}
 
 .gen-btn{width:100%;padding:18px;background:var(--bgrad);color:#fff;font-size:1.08rem;font-weight:900;border:none;border-radius:16px;cursor:pointer;letter-spacing:.07em;box-shadow:0 6px 24px var(--bshadow);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;position:relative;overflow:hidden;transition:all .2s;font-family:var(--font);}
 .gen-btn::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:left .5s;}
@@ -454,9 +457,8 @@ footer{text-align:center;padding:28px 14px;font-size:.75rem;color:var(--txs);bor
   </div>
 
   <!-- 残回数表示 -->
-  <div class="trial-info" id="trialInfo">
-    <div>無料トライアル残り回数</div>
-    <div class="trial-count" id="trialDots"></div>
+  <div class="trial-banner hidden" id="trialBanner" onclick="handleTrialClick()">
+    <span id="trialText"></span>
   </div>
 
   <button class="gen-btn" id="genBtn" onclick="generate()">🍳 調理開始！SNS投稿文をつくる</button>
@@ -526,17 +528,32 @@ function addCount(){ localStorage.setItem(TRIAL_KEY, getCount()+1); }
 
 /* ===== 残回数UI ===== */
 function updateTrialUI(){
-  if(isAuthed()){ document.getElementById('trialInfo').style.display='none'; return; }
+  const banner = document.getElementById('trialBanner');
+  if(!banner) return;
+  if(isAuthed()){ banner.className = 'trial-banner hidden'; return; }
+  
   const used = getCount();
-  const rem  = TRIAL_LIMIT - used;
-  const dots = document.getElementById('trialDots');
-  dots.innerHTML='';
-  for(let i=0;i<TRIAL_LIMIT;i++){
-    const d=document.createElement('div');
-    d.className='trial-dot'+(i<used?' used':'');
-    dots.appendChild(d);
+  const textEl = document.getElementById('trialText');
+  
+  if(used === 0) {
+    banner.className = 'trial-banner gold';
+    textEl.innerHTML = '🎁 今なら3回まで無料でお試しいただけます（登録不要）';
+  } else if (used === 1) {
+    banner.className = 'trial-banner gold';
+    textEl.innerHTML = '🎁 無料体験 残り2回（全3回）';
+  } else if (used === 2) {
+    banner.className = 'trial-banner gold';
+    textEl.innerHTML = '🎁 無料体験 残り1回（全3回）';
+  } else {
+    banner.className = 'trial-banner red';
+    textEl.innerHTML = '⚠️ 無料体験が終了しました ご購入はこちら→';
   }
-  document.getElementById('trialInfo').style.display = rem>0 ? 'block' : 'none';
+}
+
+function handleTrialClick() {
+  if (!isAuthed() && getCount() >= TRIAL_LIMIT) {
+    showGate();
+  }
 }
 
 /* ===== パスワード画面 ===== */
